@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rediscovering Web 1.0 Principles in Virtual Worlds - Richard Anaya's Mind</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lusitana:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="top-bar"></div>
+
+    <header class="site-header">
+        <a href="index.html" class="site-title-link">
+            <h1 class="site-title">RICHARD ANAYA's MIND</h1>
+        </a>
+        <p class="site-subtitle">Thoughts on Technology, Objectivism, and Artificial Intelligence</p>
+    </header>
+
+    <div class="header-divider"></div>
+
+    <main class="article-wrapper">
+        <article class="article-content">
+            <header class="article-header">
+                <h1 class="article-title">Rediscovering Web 1.0 Principles in Virtual Worlds</h1>
+                <p class="article-meta">September 25, 2023</p>
+            </header>
+
+            <div class="article-body">
+                <p>This article explores how fundamental Web 1.0 design principles—specifically hyperlinks and forms—can be applied to create three-dimensional virtual worlds, offering an alternative to complex JavaScript-heavy development approaches.</p>
+
+                <h2>The Problem with Modern Web Development</h2>
+                <p>Significant complexity exists in contemporary web applications. Frameworks like React have introduced substantial abstraction layers. Many applications don't require "high performance, componentization, and cascades of state," yet developers routinely implement these regardless. This creates burnout and excludes backend developers from frontend work.</p>
+
+                <h2>Web 1.0's Essential Primitives</h2>
+                <p>Two foundational HTML elements shaped the early web:</p>
+                <ul>
+                    <li><strong>The Link (<code>&lt;a&gt;</code> tag):</strong> Enabled document exploration and information sharing without hierarchy</li>
+                    <li><strong>The Form (<code>&lt;form&gt;</code> element):</strong> Allowed browsers to submit data, transforming the web from read-only to interactive</li>
+                </ul>
+                <p>These simple mechanisms powered interactive experiences for over a decade without requiring JavaScript.</p>
+
+                <h2>HTMX as Modern Precedent</h2>
+                <p>HTMX extends HTML functionality by allowing "any element to trigger HTTP requests." This approach validates the principle that "simple tools can solve complex problems" while maintaining server-side logic.</p>
+
+                <h2>HyperShape: 3D Worlds Without JavaScript</h2>
+                <p>HyperShape is an open-source library applying Web 1.0 principles to 3D environments. Core elements include:</p>
+                <ul>
+                    <li><code>&lt;mv-space&gt;</code>: Container for 3D objects</li>
+                    <li><code>&lt;mv-model&gt;</code>: Positions GLTF 3D models</li>
+                    <li><code>&lt;mv-link&gt;</code>: Creates navigable connections between worlds</li>
+                    <li><code>&lt;mv-form&gt;</code>: Enables data submission with camera context</li>
+                </ul>
+
+                <p>Example of a clickable 3D fox model linking to another site:</p>
+                <pre><code>&lt;mv-space&gt;
+  &lt;mv-link href="https://example.com"&gt;
+    &lt;mv-model src="fox.gltf" position="0,.1,0"&gt;&lt;/mv-model&gt;
+  &lt;/mv-link&gt;
+&lt;/mv-space&gt;</code></pre>
+
+                <h2>Historical Context: VRML</h2>
+                <p>VRML (1994) was a markup language designed for 3D visualization that preceded browser capabilities. While VRML required specialized viewers, modern web technologies now make browser-native 3D practical.</p>
+
+                <h2>Future Considerations</h2>
+                <p><strong>Augmented Reality:</strong> HyperShape anticipates multiple spaces attachable to real-world locations via WebXR.</p>
+                <p><strong>Enhanced Forms:</strong> Proposes passing camera position/orientation as hidden form data to enable informed server responses about rendered worlds.</p>
+                <p><strong>Aesthetic Transitions:</strong> References CSS View Transitions API to improve visual fluidity without JavaScript complexity.</p>
+
+                <h2>Broader Implications</h2>
+                <p>Simplifying metaverse development tools could:</p>
+                <ul>
+                    <li>Make 3D creation accessible to backend developers</li>
+                    <li>Reduce time and financial investment</li>
+                    <li>Enable decentralized, interoperable virtual spaces</li>
+                    <li>Shift logic server-side rather than requiring specialized frontend expertise</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>Examining Web 1.0's foundational design reveals essential principles often obscured by modern frameworks. By applying these time-tested concepts to emerging technologies, developers can create compelling interactive experiences with significantly reduced complexity and broader accessibility.</p>
+            </div>
+
+            <footer class="article-footer">
+                <a href="index.html" class="back-link">&larr; Back to all articles</a>
+            </footer>
+        </article>
+    </main>
+
+    <div class="footer-divider"></div>
+
+    <footer class="site-footer">
+        <p class="copyright">&copy; 2025 Richard Anaya &mdash; All rights reserved.</p>
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">GitHub</a>
+        </nav>
+    </footer>
+</body>
+</html>
