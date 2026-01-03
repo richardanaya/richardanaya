@@ -1,61 +1,19 @@
-# richardanaya2_2048b.Q6_K.gguf
+# Richard Anaya
 
 Thoughts on Technology, Objectivism, and Artificial Intelligence
 
----
+## Articles
 
-## Blog Posts
+- [Cognitive Operating Systems](https://richardanaya.github.io/richardanaya/cognitive-operating-systems.html) — Exploring how LLMs exhibit behaviors resembling operating systems.
 
-### Cognitive Operating Systems
-![Cognitive Operating Systems](cognitive-operating-systems.png)
+- [Software Research and Development in the Era of Generative AI](https://richardanaya.github.io/richardanaya/software-research-and-development.html) — How generative AI is shifting R&D to become a primary aspect of technology organizations.
 
-Abstracting the essence of interactive experiences — exploring how LLMs exhibit behaviors resembling operating systems.
+- [Rediscovering Web 1.0 Principles in Virtual Worlds](https://richardanaya.github.io/richardanaya/rediscovering-web-10-principles.html) — Applying hyperlinks and forms to create three-dimensional virtual worlds.
 
-[Read more](cognitive-operating-systems.html)
+- [The Psycho-Epistemological Nature of Software Development SMEs](https://richardanaya.github.io/richardanaya/psycho-epistemological-nature.html) — How familiarity shapes competency levels across different tasks.
 
-### Software Research and Development in the Era of Generative AI
-![Software Research and Development](software-research-and-development.png)
-
-The instruction guide I was never given — discussing how generative AI is shifting research and development to become a primary aspect of technology organizations.
-
-[Read more](software-research-and-development.html)
-
-### Rediscovering Web 1.0 Principles in Virtual Worlds
-![Rediscovering Web 1.0 Principles](rediscovering-web-10-principles.png)
-
-Exploring how fundamental Web 1.0 design principles—hyperlinks and forms—can be applied to create three-dimensional virtual worlds.
-
-[Read more](rediscovering-web-10-principles.html)
-
-### The Psycho-Epistemological Nature of Software Development Subject Matter Experts
-![Psycho-Epistemological Nature](psycho-epistemological-nature.png)
-
-Exploring how individuals within software development organizations display varying competency levels for different tasks, with familiarity being the most significant factor.
-
-[Read more](psycho-epistemological-nature.html)
-
-### Objective Software Development Time Estimation For The Non-Omniscient
-![Time Estimation](objective-software-development-time.png)
-
-A method for making software time estimates by economizing one's analysis of timed activities to a cognitively manageable level.
-
-[Read more](objective-software-development-time.html)
-
-## Categories
-
-- **AI** 🤖
-- **Technology** 💻
-- **Objectivism** 🕒
-- **Management** 📊
+- [Objective Software Development Time Estimation](https://richardanaya.github.io/richardanaya/objective-software-development-time.html) — A method for making cognitively manageable time estimates.
 
 ## About
 
-![Richard Anaya](richard.png)
-
-Richard Anaya is a thoughtful programmer living in Portland, OR who works as a Head of AI and enjoys building bridges between philosophy, business, and technology.
-
----
-
-© 2025 Richard Anaya — All rights reserved.
-
-[About](#) | [Projects](#) | [GitHub](#)
+Richard Anaya is a programmer in Portland, OR working as Head of AI, building bridges between philosophy, business, and technology.
