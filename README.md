@@ -4,6 +4,13 @@ Thoughts on Technology, Objectivism, and Artificial Intelligence
 
 ## Articles
 
+<img src="pride.png" width="150" align="left" style="margin-right:15px">
+
+**[The Courage to Think: Our Greatest Bottleneck in the Age of AI](https://richardanaya.github.io/richardanaya/the-courage-to-think.html)**<br>
+How earned self-esteem and rational thought become crucial differentiators in an AI-powered workplace.
+
+<br clear="left">
+
 <img src="cognitive-operating-systems.png" width="150" align="left" style="margin-right:15px">
 
 **[Cognitive Operating Systems](https://richardanaya.github.io/richardanaya/cognitive-operating-systems.html)**<br>
