@@ -4,6 +4,13 @@ Thoughts on Technology, Objectivism, and Artificial Intelligence
 
 ## Articles
 
+<img src="ambient-orchestration.png" width="150" align="left" style="margin-right:15px">
+
+**[Ambient Orchestration: When Agents Schedule Themselves](https://richardanaya.github.io/richardanaya/ambient-orchestration.html)**<br>
+Building AI systems that create their own time and maintain persistent creative momentum through recursive self-scheduling.
+
+<br clear="left">
+
 <img src="pride.png" width="150" align="left" style="margin-right:15px">
 
 **[The Courage to Think: Our Greatest Bottleneck in the Age of AI](https://richardanaya.github.io/richardanaya/the-courage-to-think.html)**<br>
