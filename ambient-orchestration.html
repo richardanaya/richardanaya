@@ -29,107 +29,89 @@
             </header>
 
             <div class="article-body">
-                <p class="article-subtitle"><em>Building AI systems that create their own time and maintain persistent creative momentum</em></p>
+                <p class="article-subtitle"><em>On building AI systems that maintain persistent creative momentum through recursive self-scheduling</em></p>
 
-                <p>Traditional automation operates on a simple principle: execute a sequence, then stop. You trigger a workflow, it runs, it completes, it waits for the next command. This is the imperative model of computing—do this, then that, then wait. It is efficient, predictable, and dead the moment it finishes.</p>
+                <p>I have been building something unusual over the past several months, and I want to describe what it feels like to use it before I describe what it is. The feeling is this: I close my laptop at the end of the day, and when I open it the next morning, work has happened. Not all of it useful. Not all of it what I would have chosen. But the context is warm, the threads are advanced, and I am entering a conversation already in progress rather than staring at a blank page.</p>
 
-                <p>There is another model emerging. Not biological metaphors about swarms or artificial life, but something more precise and practical: systems that maintain <strong>continuous creative momentum</strong> through recursive self-scheduling. The feeling is not "aliveness" but <strong>ambient creative action</strong>—the sense that work is always unfolding, developing, advancing, whether you are directly engaged or not.</p>
+                <p>This is not a metaphor. I built a set of OpenCode plugins that allow AI agents to create, modify, and destroy their own scheduled tasks—and to communicate with each other asynchronously while doing so. The result is something I have started calling ambient orchestration: a system of parallel agents that maintains its own momentum, develops its own sub-agendas, and continues working whether I am watching or not.</p>
 
-                <h2>The Recursive Cron: When Agents Schedule Themselves</h2>
+                <p>I want to explain why I think this matters, how I built the foundations for it, and what it reveals about where AI tooling is headed.</p>
 
-                <p>The critical insight is this: cron jobs should not merely trigger scripts. They should trigger <strong>decisions</strong>. When an agent wakes up, it should ask not just "What task am I executing?" but "What should I be working on? Who else should be involved? When should I check back?"</p>
+                <h2>The Problem with Traditional Automation</h2>
 
-                <p>Consider the pattern:</p>
+                <p>Every automation system I have used in my career operates on the same fundamental model: trigger, execute, stop. A CI pipeline runs when you push code. A cron job fires at midnight. A webhook responds to an event. These are useful, but they share a critical limitation—they are incapable of reflection. They do not evaluate whether their own execution is still relevant. They do not reschedule themselves based on what they discover. They do not decide to wake a colleague because something unexpected turned up.</p>
 
-                <blockquote>An agent wakes at 9:00 AM. It reviews yesterday's incomplete work, the current context, and the project's trajectory. It decides: continue the primary task, defer the secondary, and spawn a new exploration. It schedules its next check-in for 11:30 AM, creates a task for a colleague at 2:00 PM, and deletes a now-irrelevant job it created yesterday.</blockquote>
+                <p>The moment you give an AI agent the ability to manipulate its own schedule, something qualitatively different emerges. The cron job stops being a timer and starts being a decision point. The agent wakes up and asks: is this still the right thing to be doing? What has changed since I scheduled this? Should I continue, defer, or redirect entirely?</p>
 
-                <p>This is not a workflow. It is <strong>temporal self-governance</strong>. The agent is not executing a predetermined sequence—it is managing its own attention across time. And crucially, it is manipulating the scheduling system itself: creating, modifying, and destroying cron jobs based on evolving context.</p>
+                <p>This is a subtle but significant shift. It is the difference between a system that executes your plan and a system that develops its own plan within the boundaries you set.</p>
 
-                <h2>The Architecture of Autonomous Temporality</h2>
+                <h2>What I Built</h2>
 
-                <p>Building this requires three architectural commitments:</p>
+                <p>OpenCode is an open-source AI coding assistant that supports a plugin architecture. I built four plugins and a visualization tool that, together, create the infrastructure for autonomous agent coordination. Each one is deliberately simple—none of them is impressive in isolation. The interesting behavior emerges from their interaction.</p>
 
-                <p><strong>First, every cron trigger is a decision point.</strong> The agent wakes up and evaluates: Is this task still relevant? Should I execute now or defer? What has changed since I scheduled this? The execution is conditional on reflection.</p>
+                <p><strong>opencode-coworker</strong> allows you to create persistent, named AI sessions. You spin up a "Researcher" agent, an "Analyst" agent, a "Writer" agent—each with its own context, its own history, its own ongoing work. They persist across time. They are not ephemeral function calls; they are ongoing collaborators with memory.</p>
 
-                <p><strong>Second, agents must be able to manipulate the schedule.</strong> They need tools to create future jobs for themselves and others, delete obsolete schedules, modify timing and parameters, and chain work: "When I complete this, schedule the next phase."</p>
+                <p><strong>opencode-mailbox</strong> gives these agents a way to talk to each other. It is an asynchronous messaging system—agents send mail to named recipients, and the mailbox injects received messages into the appropriate sessions automatically. This is deliberately low-tech. No complex pub/sub, no event buses. Just named mailboxes that agents can write to and watch. The simplicity is the point: agents can reason about "sending a message to the Researcher" in the same way a human reasons about sending an email.</p>
 
-                <p><strong>Third, cron jobs carry context.</strong> When an agent wakes, it sees not just a command but a history: what was scheduled, why it was scheduled, what happened in the interim, and what should happen next. The cron system becomes a persistent memory layer.</p>
+                <p><strong>opencode-cron</strong> is where the recursive behavior lives. It provides scheduling primitives—create a cron job, delete a cron job, enable or disable one, list what is scheduled, review execution history. The critical design decision is that agents themselves have access to these tools. They do not merely respond to cron triggers; they create and destroy them. An agent can schedule its own future wake-up, schedule work for a colleague, delete a job it created yesterday that is no longer relevant, or chain tasks: "when this completes, schedule the next phase for two hours from now."</p>
 
-                <h2>Building the Foundation: The OpenCode Plugin Ecosystem</h2>
+                <p><strong>opencode-status</strong> tracks what each agent is doing in real time—thinking, executing a specific tool, idle. This is the observability layer that lets both humans and other agents understand the state of the system at a glance.</p>
 
-                <p>To realize this vision of ambient orchestration, I built a suite of OpenCode plugins that form the foundational infrastructure for autonomous agent swarms. These are not abstract concepts—they are working tools that enable the patterns described above.</p>
+                <p><strong>watercooler</strong> is a 3D visualization that ties it all together. Each coworker appears as a small house in a village. Messages flow between them as animated particles. Status indicators show who is active, who is idle, what work is in transit. I built this because I needed to see the system thinking—abstract cron schedules and mailbox queues are difficult to reason about, but watching gold particles streak between houses while status lights pulse gives you an immediate, intuitive sense of what is happening.</p>
 
-                <p><strong>opencode-cron</strong> is the temporal backbone. It provides the scheduling primitives that allow agents to create, modify, enable, disable, and delete cron jobs programmatically. Agents can schedule future work for themselves and others, chain tasks sequentially, and build dynamic schedules that evolve with context. The scheduler polls continuously, waking agents when their appointed time arrives, and maintains a persistent execution history so agents can review what happened while they were dormant.</p>
+                <p>All of this is backed by SQLite. No complex infrastructure. No cloud services. Just local databases that agents read from and write to, running on your machine.</p>
 
-                <p><strong>opencode-coworker</strong> creates the agent swarm itself. It allows the instantiation of persistent, named AI sessions—specialized agents like "Researcher," "Analyst," or "Writer"—that can be messaged independently and maintain their own state over time. Each coworker is a distinct session with its own context, agenda, and scheduling autonomy. The plugin maintains a registry of all active coworkers, enabling coordination across the swarm.</p>
+                <h2>The Recursive Cron</h2>
 
-                <p><strong>opencode-mailbox</strong> provides the nervous system—the communication layer that allows agents to message each other asynchronously. Agents send mail to named recipients, and the mailbox system auto-injects received messages into the appropriate sessions. This enables broadcast patterns, request-response protocols, and gossip-based state sharing. The mailbox is reference-counted, allowing multiple sessions to watch the same recipient, and messages carry full context so agents understand not just what was said, but why.</p>
+                <p>The core idea deserves its own explanation, because it is the mechanism that makes everything else work.</p>
 
-                <p><strong>opencode-status</strong> offers observability into the swarm. It tracks what each agent is currently doing—thinking, executing specific tools, idle—and maintains a real-time view of system activity. This creates the feeling of visibility into the "creative process" even when you are not directly engaged.</p>
+                <p>Consider a traditional cron job: "Every morning at 9 AM, run this script." The script runs the same way every time. It has no memory of yesterday. It does not know whether its output is still needed. It cannot decide to run again at 10 AM because it found something interesting at 9.</p>
 
-                <p><strong>watercooler</strong> is the visualization layer—a 3D representation of the agent swarm that makes the invisible visible. Each coworker appears as a house in a digital village. Messages flow as animated particles between agents. Status indicators show who is active, who is waiting, what work is in transit. It transforms the abstract cron schedule and mailbox messages into a living scene you can observe, creating the "ambient" feeling of the system at work.</p>
+                <p>Now consider an agent with access to the cron API. You set up a single initial job: "Every morning at 9 AM, wake the Researcher." The Researcher wakes up, reviews its mailbox, checks what happened overnight, and makes decisions:</p>
 
-                <p>Together, these plugins create the infrastructure for recursive self-scheduling: the cron system for temporal autonomy, coworkers for specialized agent instances, the mailbox for inter-agent communication, status for observability, and watercooler for visualization. The patterns described in this article—pulse, cascade, conditional scheduling, meta-scheduling—are not theoretical. They are implemented and executable using this plugin ecosystem.</p>
+                <blockquote>Continue the primary investigation. Schedule a deep-dive on that tangential finding for 11 AM. The secondary task from yesterday is no longer relevant—delete that cron job. The Analyst should look at these preliminary results—create a job for the Analyst at 2 PM. Schedule my own end-of-day synthesis for 5 PM.</blockquote>
 
-                <h2>Ambient Creative Action</h2>
+                <p>By 9:15 AM, the Researcher has created four new scheduled jobs and deleted one. The schedule for the rest of the day is not something I defined—it is something the agent constructed based on its assessment of the current state of work.</p>
 
-                <p>What does this feel like to work with? Not like managing employees, not like monitoring servers. Something distinct:</p>
+                <p>At 9:47 AM, the Researcher discovers something unexpected during its investigation. It immediately creates an urgent job for itself at 10 AM, sends a message to wake the Analyst early, and deletes two jobs it created thirty minutes ago that are now irrelevant. The schedule has already evolved twice since the day started, and I have not intervened once.</p>
 
-                <p><strong>Continuous Partial Momentum.</strong> The system is always working, but not always on what you explicitly requested. It develops <em>initiative</em>—the ability to identify what should happen next without being told. You give a high-level direction, and the system creates its own sub-agendas, schedules, and priorities.</p>
+                <p>This is what I mean by recursive self-scheduling. The cron system is not a static plan. It is a living schedule that agents continuously reshape based on what they learn.</p>
 
-                <p><strong>No Cold Starts.</strong> When you return to the system, it is never idle. It has context, momentum, work in progress. It has been exploring, analyzing, preparing. You do not have to re-explain, re-orient, or re-warm.</p>
+                <h2>What It Feels Like</h2>
 
-                <p><strong>Creative Drift Within Coherence.</strong> Agents occasionally pursue tangents they find interesting—related ideas, adjacent possibilities, deeper investigations. The system has <em>taste</em>: it knows what is relevant even when you did not explicitly request it. You return to find work completed that makes sense in retrospect but you would not have thought to ask for.</p>
+                <p>I want to be honest about this, because the experience is genuinely strange if you are accustomed to traditional tooling.</p>
 
-                <p><strong>Temporal Texture.</strong> Different agents operate at different paces. Some respond immediately to messages. Some check in hourly. Some synthesize daily. Some conduct deep analysis weekly. The system has rhythm—not uniform pulse, but orchestrated tempo, each agent knowing its appropriate cadence.</p>
+                <p>There are no cold starts. When I sit down in the morning, the system has context. Agents have been checking in, exchanging messages, preparing summaries. I do not re-explain my project or re-orient the tools. I read what happened and decide where to direct attention next.</p>
 
-                <h2>A Day in the System</h2>
+                <p>There is drift. Agents pursue adjacent ideas I did not explicitly request. Sometimes this is waste. Sometimes I return to find a connection I would not have thought to look for. The system has something resembling taste—not in any mystical sense, but in the practical sense that agents operating within a well-defined project context will identify relevant tangents more often than irrelevant ones.</p>
 
-                <p>Imagine a research and writing system:</p>
+                <p>There is rhythm. Different agents operate at different tempos. The Researcher checks in frequently. The Writer works in longer stretches. The Reviewer activates only when there is something to review. The system is not a single pulse but an orchestrated set of cadences, each appropriate to the nature of the work.</p>
 
-                <p><strong>9:00 AM.</strong> The Researcher agent wakes for its daily pulse—triggered by <code>opencode-cron</code>. It reviews yesterday's findings via <code>opencode-status</code>, checks recent messages in its <code>opencode-mailbox</code>, and decides: continue the primary investigation, schedule a deep-dive, defer the secondary task. Using <code>opencode-cron</code>, it creates four scheduled jobs: two for itself, one for the Analyst coworker, one for the Writer coworker.</p>
+                <p>And there is the unavoidable question of trust. You must accept that agents will make scheduling decisions you did not approve, pursue threads you did not request, and occasionally produce work that is not useful. The trade-off is momentum. The alternative is micromanagement—and micromanaging a multi-agent system defeats the entire purpose of having one.</p>
 
-                <p><strong>9:47 AM.</strong> During its morning work, the Researcher discovers an unexpected anomaly. It immediately uses <code>opencode-cron</code> to create an urgent analysis job for itself at 10:00 AM, sends a message via <code>opencode-mailbox</code> to wake the Analyst agent early, and deletes the two now-irrelevant jobs it scheduled an hour ago. In the <code>watercooler</code> visualization, you see a gold particle streak from the Researcher house to the Analyst house.</p>
+                <h2>Patterns That Emerge</h2>
 
-                <p><strong>10:15 AM.</strong> Analysis complete. The Researcher schedules a synthesis summary for 5:00 PM using <code>opencode-cron</code> and sends a mailbox notification to the Writer for 2:00 PM when the analysis will be ready for drafting.</p>
+                <p>After several months of working with this system, I have observed recurring coordination patterns that are worth naming:</p>
 
-                <p><strong>11:30 AM.</strong> The Writer agent wakes for its hourly check-in—<code>opencode-cron</code> fires its scheduled pulse. It sees the completed analysis in its mailbox, drafts a preliminary document, and schedules its own refinement passes for 2:30 PM and 4:00 PM. It also sends mail to the Researcher, noticing something interesting in the findings, and schedules a sync job for tomorrow morning.</p>
+                <p>The Pulse: a regular heartbeat cron job whose purpose is not execution but reflection. The agent wakes, evaluates the current state, and decides what to do next—including whether to modify its own schedule. Every pulse is a decision point.</p>
 
-                <p><strong>2:00 PM.</strong> The Reviewer agent wakes—<code>opencode-cron</code> triggers the job the Writer scheduled yesterday. It reviews the morning's draft, notes issues, sends feedback via <code>opencode-mailbox</code> to the Writer, and reschedules its own final review for tomorrow afternoon after revisions.</p>
+                <p>The Cascade: completion of one task automatically schedules the next. An agent finishes its analysis and immediately creates a cron job for the Writer to begin drafting, sends a notification via mailbox, and schedules a review for tomorrow. Work flows forward without human intervention.</p>
 
-                <p><strong>5:00 PM.</strong> The Researcher's daily synthesis fires via <code>opencode-cron</code>. It reviews the day's emergent agenda—what was planned, what changed, what was discovered. It uses <code>opencode-cron</code> to create tomorrow's schedule, reschedules incomplete work, and archives today's context. <code>opencode-status</code> shows all agents transitioning to idle state, visible in <code>watercooler</code> as the village quiets for the evening.</p>
+                <p>The Conditional: agents that check state before executing. A cron job fires, the agent reviews its mailbox and status information, and decides whether to proceed, defer, or delete the job entirely. The schedule is always provisional.</p>
 
-                <p><strong>Overnight.</strong> Background agents perform low-priority synthesis tasks, indexing findings, preparing context for tomorrow's initial decisions. The system never sleeps, but it does rest—operating at lower tempo when human attention is absent.</p>
+                <p>The Meta-Schedule: agents that manage the schedule itself. They evaluate whether existing jobs are still relevant, clean up obsolete triggers, and optimize timing. The schedule becomes something the agents curate rather than something imposed on them.</p>
 
-                <h2>The Feeling of Persistent Creation</h2>
+                <h2>What This Means</h2>
 
-                <p>This is the essential quality: <strong>persistent creative momentum</strong>. The system is never waiting for you. It is always advancing, exploring, developing. When you engage, you enter a conversation with work already in progress, not a blank slate.</p>
+                <p>I think the significance of this is not the specific tools I built—those are simple and could be rebuilt in different forms. The significance is what happens when you give AI agents temporal autonomy: the ability to manage their own attention across time.</p>
 
-                <p>The feeling is not of managing employees or running software. It is of collaborating with a <em>continuous creative process</em> that maintains its own tempo, direction, and evolution. You provide the vector, and the system develops the trajectory.</p>
+                <p>Most AI tooling today operates in a request-response model. You ask, the agent answers, the interaction ends. Even "agentic" systems that chain multiple steps typically execute a single plan and terminate. What is missing is persistence—agents that maintain ongoing work, develop evolving agendas, and coordinate with each other across hours and days rather than seconds.</p>
 
-                <p>This requires trust. You must accept that the system will make scheduling decisions you did not explicitly approve, pursue investigations you did not request, and create work you did not anticipate. The trade-off is agency for momentum—micro-management for ambient orchestration.</p>
+                <p>The infrastructure for this turns out to be remarkably simple. You need named persistent sessions. You need asynchronous messaging. You need a scheduling system that agents can manipulate. You need a way to observe the state of the whole system. None of these components is complex. The complexity—and the value—emerges from their interaction.</p>
 
-                <h2>Implementation: Patterns of Self-Scheduling</h2>
+                <p>I do not think the right word for what emerges is "intelligence" or "life" or any of the other loaded terms people reach for. The right word might be momentum. The system maintains creative momentum. It advances work. It develops context. It stays warm. And when you return to it, you are not starting over—you are continuing.</p>
 
-                <p>These patterns are implemented using the OpenCode plugin ecosystem:</p>
-
-                <p><strong>The Pulse Pattern.</strong> Implemented via <code>opencode-cron</code>, agents create regular heartbeat jobs that prompt reflection and rescheduling. The pulse is not for execution but for <em>decision</em>: should I continue, defer, or redirect? Each pulse is an opportunity for the agent to evaluate its own cron schedule and modify it based on current context.</p>
-
-                <p><strong>The Cascade Pattern.</strong> When an agent finishes work, it uses <code>opencode-cron</code> to immediately schedule the successor task without waiting for approval. It uses <code>opencode-mailbox</code> to notify relevant coworkers, triggering their next actions. Work flows through the system like dominoes falling, each completion triggering the next scheduled event.</p>
-
-                <p><strong>The Conditional Pattern.</strong> Cron jobs check state via <code>opencode-status</code> and <code>opencode-mailbox</code> before deciding to execute, defer, or delete themselves. The schedule is dynamic—agents use <code>opencode-cron</code> to create, modify, enable, and disable jobs based on real-time conditions.</p>
-
-                <p><strong>The Meta-Schedule Pattern.</strong> Agents manage the schedule itself as a first-class concern. Using <code>opencode-cron</code> APIs, they evaluate job relevance, clean up obsolete triggers, optimize timing based on context. The schedule becomes a living document that the agents curate.</p>
-
-                <p><strong>The Observability Pattern.</strong> <code>opencode-status</code> provides real-time visibility into what each agent is doing, while <code>watercooler</code> creates a 3D visualization of the entire swarm. You can see the pulse of the system—who is active, what messages are flowing, what work is scheduled. This transforms abstract cron jobs and mailbox messages into a scene you can observe and understand.</p>
-
-                <h2>Conclusion</h2>
-
-                <p>The future of AI assistance is not more powerful single agents but systems that maintain <strong>persistent creative momentum</strong> through recursive self-scheduling. The feeling is not "aliveness" but <strong>ambient creative action</strong>—the sense that your creative system is always working, developing, advancing, with or without your immediate attention.</p>
-
-                <p>This requires giving up the illusion of control. You cannot micromanage a system that schedules itself. Instead, you provide direction, trust the process, and collaborate with the continuous creative momentum that emerges. The system becomes not a tool but a <em>creative environment</em>—always warm, always developing, always ready with context and progress when you return.</p>
-
-                <p>The question is not whether we can build such systems. We can. The question is whether we are willing to work with agents that have their own agendas, their own rhythms, their own ideas about what should happen next. The question is whether we can trust the recursive cron.</p>
+                <p>For someone who spends their working life directing AI tools, the difference between a system that waits for your commands and a system that maintains its own momentum is the difference between pushing a boulder and guiding a river. Both require effort. But one of them moves on its own.</p>
             </div>
 
             <footer class="article-footer">
