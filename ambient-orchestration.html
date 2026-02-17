@@ -55,6 +55,22 @@
 
                 <p><strong>Third, cron jobs carry context.</strong> When an agent wakes, it sees not just a command but a history: what was scheduled, why it was scheduled, what happened in the interim, and what should happen next. The cron system becomes a persistent memory layer.</p>
 
+                <h2>Building the Foundation: The OpenCode Plugin Ecosystem</h2>
+
+                <p>To realize this vision of ambient orchestration, I built a suite of OpenCode plugins that form the foundational infrastructure for autonomous agent swarms. These are not abstract concepts—they are working tools that enable the patterns described above.</p>
+
+                <p><strong>opencode-cron</strong> is the temporal backbone. It provides the scheduling primitives that allow agents to create, modify, enable, disable, and delete cron jobs programmatically. Agents can schedule future work for themselves and others, chain tasks sequentially, and build dynamic schedules that evolve with context. The scheduler polls continuously, waking agents when their appointed time arrives, and maintains a persistent execution history so agents can review what happened while they were dormant.</p>
+
+                <p><strong>opencode-coworker</strong> creates the agent swarm itself. It allows the instantiation of persistent, named AI sessions—specialized agents like "Researcher," "Analyst," or "Writer"—that can be messaged independently and maintain their own state over time. Each coworker is a distinct session with its own context, agenda, and scheduling autonomy. The plugin maintains a registry of all active coworkers, enabling coordination across the swarm.</p>
+
+                <p><strong>opencode-mailbox</strong> provides the nervous system—the communication layer that allows agents to message each other asynchronously. Agents send mail to named recipients, and the mailbox system auto-injects received messages into the appropriate sessions. This enables broadcast patterns, request-response protocols, and gossip-based state sharing. The mailbox is reference-counted, allowing multiple sessions to watch the same recipient, and messages carry full context so agents understand not just what was said, but why.</p>
+
+                <p><strong>opencode-status</strong> offers observability into the swarm. It tracks what each agent is currently doing—thinking, executing specific tools, idle—and maintains a real-time view of system activity. This creates the feeling of visibility into the "creative process" even when you are not directly engaged.</p>
+
+                <p><strong>watercooler</strong> is the visualization layer—a 3D representation of the agent swarm that makes the invisible visible. Each coworker appears as a house in a digital village. Messages flow as animated particles between agents. Status indicators show who is active, who is waiting, what work is in transit. It transforms the abstract cron schedule and mailbox messages into a living scene you can observe, creating the "ambient" feeling of the system at work.</p>
+
+                <p>Together, these plugins create the infrastructure for recursive self-scheduling: the cron system for temporal autonomy, coworkers for specialized agent instances, the mailbox for inter-agent communication, status for observability, and watercooler for visualization. The patterns described in this article—pulse, cascade, conditional scheduling, meta-scheduling—are not theoretical. They are implemented and executable using this plugin ecosystem.</p>
+
                 <h2>Ambient Creative Action</h2>
 
                 <p>What does this feel like to work with? Not like managing employees, not like monitoring servers. Something distinct:</p>
@@ -71,17 +87,17 @@
 
                 <p>Imagine a research and writing system:</p>
 
-                <p><strong>9:00 AM.</strong> The Researcher agent wakes for its daily pulse. It reviews yesterday's findings, the current project context, and recent messages. It decides: continue the primary investigation, schedule a deep-dive on a tangential finding, and defer the secondary task. It creates four scheduled jobs: two for itself, one for the Analyst, one for the Writer.</p>
+                <p><strong>9:00 AM.</strong> The Researcher agent wakes for its daily pulse—triggered by <code>opencode-cron</code>. It reviews yesterday's findings via <code>opencode-status</code>, checks recent messages in its <code>opencode-mailbox</code>, and decides: continue the primary investigation, schedule a deep-dive, defer the secondary task. Using <code>opencode-cron</code>, it creates four scheduled jobs: two for itself, one for the Analyst coworker, one for the Writer coworker.</p>
 
-                <p><strong>9:47 AM.</strong> During its morning work, the Researcher discovers something unexpected—an anomaly that suggests a different direction. It immediately creates an urgent analysis job for itself at 10:00 AM, wakes the Analyst agent early, and deletes the two now-irrelevant jobs it scheduled an hour ago.</p>
+                <p><strong>9:47 AM.</strong> During its morning work, the Researcher discovers an unexpected anomaly. It immediately uses <code>opencode-cron</code> to create an urgent analysis job for itself at 10:00 AM, sends a message via <code>opencode-mailbox</code> to wake the Analyst agent early, and deletes the two now-irrelevant jobs it scheduled an hour ago. In the <code>watercooler</code> visualization, you see a gold particle streak from the Researcher house to the Analyst house.</p>
 
-                <p><strong>10:15 AM.</strong> Analysis complete. The Researcher schedules a synthesis summary for 5:00 PM (end-of-day integration) and creates a notification job for the Writer at 2:00 PM when the analysis will be ready for drafting.</p>
+                <p><strong>10:15 AM.</strong> Analysis complete. The Researcher schedules a synthesis summary for 5:00 PM using <code>opencode-cron</code> and sends a mailbox notification to the Writer for 2:00 PM when the analysis will be ready for drafting.</p>
 
-                <p><strong>11:30 AM.</strong> The Writer agent wakes for its hourly check-in. It sees the completed analysis, drafts a preliminary document, and schedules its own refinement passes for 2:30 PM and 4:00 PM. It also notices the Researcher is working on something interesting and schedules a sync job for tomorrow morning.</p>
+                <p><strong>11:30 AM.</strong> The Writer agent wakes for its hourly check-in—<code>opencode-cron</code> fires its scheduled pulse. It sees the completed analysis in its mailbox, drafts a preliminary document, and schedules its own refinement passes for 2:30 PM and 4:00 PM. It also sends mail to the Researcher, noticing something interesting in the findings, and schedules a sync job for tomorrow morning.</p>
 
-                <p><strong>2:00 PM.</strong> The Reviewer agent wakes (scheduled by the Writer yesterday) and reviews the morning's draft. It notes issues, creates feedback tasks for the Writer, and reschedules its own final review for tomorrow afternoon after revisions.</p>
+                <p><strong>2:00 PM.</strong> The Reviewer agent wakes—<code>opencode-cron</code> triggers the job the Writer scheduled yesterday. It reviews the morning's draft, notes issues, sends feedback via <code>opencode-mailbox</code> to the Writer, and reschedules its own final review for tomorrow afternoon after revisions.</p>
 
-                <p><strong>5:00 PM.</strong> The Researcher's daily synthesis fires. It reviews the day's emergent agenda—what was planned, what changed, what was discovered. It creates tomorrow's schedule, reschedules incomplete work, and archives today's context for tomorrow's decision points.</p>
+                <p><strong>5:00 PM.</strong> The Researcher's daily synthesis fires via <code>opencode-cron</code>. It reviews the day's emergent agenda—what was planned, what changed, what was discovered. It uses <code>opencode-cron</code> to create tomorrow's schedule, reschedules incomplete work, and archives today's context. <code>opencode-status</code> shows all agents transitioning to idle state, visible in <code>watercooler</code> as the village quiets for the evening.</p>
 
                 <p><strong>Overnight.</strong> Background agents perform low-priority synthesis tasks, indexing findings, preparing context for tomorrow's initial decisions. The system never sleeps, but it does rest—operating at lower tempo when human attention is absent.</p>
 
@@ -95,15 +111,17 @@
 
                 <h2>Implementation: Patterns of Self-Scheduling</h2>
 
-                <p>Practical patterns for building this:</p>
+                <p>These patterns are implemented using the OpenCode plugin ecosystem:</p>
 
-                <p><strong>The Pulse Pattern.</strong> Regular heartbeat cron jobs that prompt reflection and rescheduling. The pulse is not for execution but for <em>decision</em>: should I continue, defer, or redirect?</p>
+                <p><strong>The Pulse Pattern.</strong> Implemented via <code>opencode-cron</code>, agents create regular heartbeat jobs that prompt reflection and rescheduling. The pulse is not for execution but for <em>decision</em>: should I continue, defer, or redirect? Each pulse is an opportunity for the agent to evaluate its own cron schedule and modify it based on current context.</p>
 
-                <p><strong>The Cascade Pattern.</strong> Completion automatically triggers next-phase scheduling. When an agent finishes work, it does not wait for approval—it schedules the successor task and notifies relevant colleagues.</p>
+                <p><strong>The Cascade Pattern.</strong> When an agent finishes work, it uses <code>opencode-cron</code> to immediately schedule the successor task without waiting for approval. It uses <code>opencode-mailbox</code> to notify relevant coworkers, triggering their next actions. Work flows through the system like dominoes falling, each completion triggering the next scheduled event.</p>
 
-                <p><strong>The Conditional Pattern.</strong> Cron jobs that check state before deciding to execute, defer, or delete themselves. The schedule is dynamic, not fixed.</p>
+                <p><strong>The Conditional Pattern.</strong> Cron jobs check state via <code>opencode-status</code> and <code>opencode-mailbox</code> before deciding to execute, defer, or delete themselves. The schedule is dynamic—agents use <code>opencode-cron</code> to create, modify, enable, and disable jobs based on real-time conditions.</p>
 
-                <p><strong>The Meta-Schedule Pattern.</strong> Agents that manage the schedule itself as a first-class concern—evaluating job relevance, cleaning up obsolete triggers, optimizing timing based on context.</p>
+                <p><strong>The Meta-Schedule Pattern.</strong> Agents manage the schedule itself as a first-class concern. Using <code>opencode-cron</code> APIs, they evaluate job relevance, clean up obsolete triggers, optimize timing based on context. The schedule becomes a living document that the agents curate.</p>
+
+                <p><strong>The Observability Pattern.</strong> <code>opencode-status</code> provides real-time visibility into what each agent is doing, while <code>watercooler</code> creates a 3D visualization of the entire swarm. You can see the pulse of the system—who is active, what messages are flowing, what work is scheduled. This transforms abstract cron jobs and mailbox messages into a scene you can observe and understand.</p>
 
                 <h2>Conclusion</h2>
 
